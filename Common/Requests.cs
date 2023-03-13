@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Json;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace MauiApp1.Common {
     public static class Requests {
@@ -22,15 +23,14 @@ namespace MauiApp1.Common {
         public static async Task<T> IviEpisode<T>(int id) {
             var payload = new {
                 @params = new object[] {
-                    id,
-                    new {
-                        app_version = AppVersion,
-                        session = Session
-                    }
-                },
+id,
+new {
+app_version = AppVersion,
+session = Session
+}
+},
                 method = "da.content.get"
             };
-
             using var httpClient = new HttpClient();
             var response = await httpClient.PostAsJsonAsync("https://api.ivi.ru/light/", payload);
 
@@ -46,8 +46,13 @@ namespace MauiApp1.Common {
         private static async Task<T> GetDeserializedResponseAsync<T>(string url) {
             using var httpClient = new HttpClient();
             var responseJson = await httpClient.GetStringAsync(url);
-            return JsonSerializer.Deserialize<T>(responseJson);
+            return JsonSerializer.Deserialize<T>(responseJson, new JsonSerializerOptions {
+                PropertyNameCaseInsensitive = true,
+                IgnoreNullValues = true,
+                Converters = { new JsonStringEnumConverter() }
+            });
         }
+
 
         private static string BuildUrl(string baseUrl, string searchTerm, string queryParam, string fields) {
             if (string.IsNullOrEmpty(baseUrl)) {
