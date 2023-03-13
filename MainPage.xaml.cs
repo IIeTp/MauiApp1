@@ -1,24 +1,20 @@
-﻿namespace MauiApp1;
+﻿using MauiApp1.Common;
+using Microsoft.Maui.Controls;
+using System.Text.Json;
+using System;
 
-public partial class MainPage : ContentPage
-{
-	int count = 0;
+namespace MauiApp1 {
+    public partial class MainPage : ContentPage {
+        public MainPage() {
+            InitializeComponent();
+        }
 
-	public MainPage()
-	{
-		InitializeComponent();
-	}
-
-	private void OnCounterClicked(object sender, EventArgs e)
-	{
-		count++;
-
-		if (count == 1)
-			CounterBtn.Text = $"Clicked {count} time";
-		else
-			CounterBtn.Text = $"Clicked {count} times";
-
-		SemanticScreenReader.Announce(CounterBtn.Text);
-	}
+        private async void OnSearchClicked(object sender, EventArgs e) {
+            string searchTerm = searchEntry.Text;
+            if (!string.IsNullOrEmpty(searchTerm)) {
+                var results = await Requests.IviSearch<dynamic>(searchTerm);
+                resultLabel.Text = JsonSerializer.Serialize(results);
+            }
+        }
+    }
 }
-
