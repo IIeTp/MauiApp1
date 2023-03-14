@@ -13,7 +13,7 @@ namespace MauiApp1 {
         private async void OnSearchClicked(object sender, System.EventArgs e) {
             string searchTerm = searchEntry.Text;
             if (!string.IsNullOrEmpty(searchTerm)) {
-                var results = await Requests.IviSearch<List<SearchResult>>(searchTerm);
+                var results = await Requests.IviSearch<List<dynamic>>(searchTerm);
                 foreach (var result in results) {
                     var button = new Button {
                         Text = result.Title

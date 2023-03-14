@@ -7,7 +7,7 @@ namespace MauiApp1.Common {
         private static readonly string Session = "32e1f3811863076944_1674148736-563660217FhQRL782hs3nA1tujX48hw";
 
         public static async Task<T> IviSearch<T>(string searchTerm) =>
-            await GetDeserializedResponseAsync<T>(BuildUrl("https://api.ivi.ru/mobileapi/autocomplete/common/v7/", searchTerm, "query", "id,name,object_type,title,year,years,orig_title,has_5_1"));
+            await GetDeserializedResponseAsync<T>(BuildUrl("https://api.ivi.ru/mobileapi/autocomplete/common/v7/", searchTerm, "query", "id,object_type,title,year,years,orig_title,has_5_1"));
 
         public static async Task<T> KinopoiskSearch<T>(string searchTerm) {
             using var httpClient = new HttpClient();
